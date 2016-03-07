@@ -20,7 +20,7 @@ public class QuranWordSim {
 	@Override
 	public String toString(){
 		return "QuranWordSim [SurahName1=" + SurahName1 + ", Ayah1=" + Ayah1 + ", SurahName2="
-				+ SurahName2 + ", Ayah2=" + Ayah2 + ", NoOfMatchingWords=" + NoOfMatchingWords + ", PercentageOfMatchingWordsInSentence1=" + PercentageOfMatchingWordsInSentence1+ ", NoOfMatchingWords=" + NoOfMatchingWords + "]";
+				+ SurahName2 + ", Ayah2=" + Ayah2 + ", NoOfMatchingWords=" + NoOfMatchingWords + ", PercentageOfMatchingWordsInSentence1=" + PercentageOfMatchingWordsInSentence1+ ", PercentageOfMatchingWordsInSentence2=" + PercentageOfMatchingWordsInSentence2 + "]";
 	}
 
 	public String getSurahName1() {
@@ -88,6 +88,4 @@ public class QuranWordSim {
 			int percentageOfMatchingWordsInSentence2) {
 		this.PercentageOfMatchingWordsInSentence2 = percentageOfMatchingWordsInSentence2;
 	}
-
-	
 }
