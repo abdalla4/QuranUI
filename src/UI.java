@@ -17,8 +17,8 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 	private JRadioButton btn2_CharBased;
 	private JSlider slider1A_V1_DegreeOfSim;
 	private JSlider slider2A_V1_DegreeOfConnectedness;
-	private JSlider slider2B_V2_DegreeOfConnectedness;
 	private JSlider slider1B_V2_DegreeOfSim;
+	private JSlider slider2B_V2_DegreeOfConnectedness;
 	private JSlider sliderC_OrderSensitivity;
 	private JButton btnRun;
 	private JLabel verse1_DegreeOfSim;
@@ -143,9 +143,9 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		slider1A_V1_DegreeOfSim.addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				// TODO Auto-generated method stub
 				JSlider source1 = (JSlider) e.getSource();
-				source1.getValue();
+				db.setV1_Sim_Word_a(source1.getValue());
+				db.setV1_Char_Word_a(source1.getValue());
 			}
 		});
 		contentPane.add(slider1A_V1_DegreeOfSim);
@@ -158,9 +158,8 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		slider2A_V1_DegreeOfConnectedness.addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				// TODO Auto-generated method stub
 				JSlider source2 = (JSlider) e.getSource();
-				source2.getValue();	
+				source2.getValue();
 			}
 		});
 		contentPane.add(slider2A_V1_DegreeOfConnectedness);
@@ -173,9 +172,9 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		slider1B_V2_DegreeOfSim.addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				// TODO Auto-generated method stub
-				JSlider source4 = (JSlider) e.getSource();
-				source4.getValue();
+				JSlider source3 = (JSlider) e.getSource();
+				db.setV2_Sim_Word_b(source3.getValue());
+				db.setV2_Char_Word_b(source3.getValue());
 			}
 		});
 		contentPane.add(slider1B_V2_DegreeOfSim);
@@ -188,9 +187,8 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		slider2B_V2_DegreeOfConnectedness.addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				// TODO Auto-generated method stub
-				JSlider source3 = (JSlider) e.getSource();
-				source3.getValue();
+				JSlider source4 = (JSlider) e.getSource();
+				source4.getValue();
 			}
 		});
 		contentPane.add(slider2B_V2_DegreeOfConnectedness);
@@ -203,7 +201,6 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		sliderC_OrderSensitivity.addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				// TODO Auto-generated method stub
 				JSlider source5 = (JSlider) e.getSource();
 				source5.getValue();
 			}
