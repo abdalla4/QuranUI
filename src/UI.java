@@ -17,8 +17,8 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 	private JRadioButton btn2_CharBased;
 	private JSlider slider1A_V1_DegreeOfSim;
 	private JSlider slider2A_V1_DegreeOfConnectedness;
-	private JSlider slider3A_V2_DegreeOfSim;
-	private JSlider slider1B_V2_DegreeOfConnectedness;
+	private JSlider slider2B_V2_DegreeOfConnectedness;
+	private JSlider slider1B_V2_DegreeOfSim;
 	private JSlider sliderC_OrderSensitivity;
 	private JButton btnRun;
 	private JLabel verse1_DegreeOfSim;
@@ -31,6 +31,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 	private JPanel pnlContent;
 	
 	private QuranSQLserverDB db;
+	
 	private List<QuranWordSim> list_WordSim;
 	private List<QuranCharSim> list_CharSim;
 	
@@ -59,7 +60,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 	private JScrollPane Char_scrollPane;
 	
 	public UI() {
-		super("Quran UI");
+		super("Quran UI V1");
 		
 		db = new QuranSQLserverDB();
 		
@@ -106,20 +107,47 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		pnlContent = new JPanel();
+		pnlContent.setBounds(456, 19, 525, 596);
+		Word_table = new JTable(Word_data, Word_columnNames);
+		Word_scrollPane = new JScrollPane(Word_table);
+		pnlContent.add(Word_scrollPane);
+		Word_table.getModel().addTableModelListener(this);
+				
+		pnlContent = new JPanel();
+		pnlContent.setBounds(456, 19, 525, 596);
+		Char_table = new JTable(Char_data, Char_columnNames);
+		Char_scrollPane = new JScrollPane(Char_table);
+		pnlContent.add(Char_scrollPane);
+		Char_table.getModel().addTableModelListener(this);
+		
+		contentPane.add(pnlContent);
+				
+		ButtonGroup buttonGroup = new ButtonGroup();
+		
 		btn1_WordBased = new JRadioButton("Word Based");
 		btn1_WordBased.setBounds(98, 19, 109, 23);
 		contentPane.add(btn1_WordBased);
+		buttonGroup.add(btn1_WordBased);
 		
 		btn2_CharBased = new JRadioButton("Character Based");
 		btn2_CharBased.setBounds(220, 19, 148, 23);
 		contentPane.add(btn2_CharBased);
+		buttonGroup.add(btn2_CharBased);
 		
 		slider1A_V1_DegreeOfSim = new JSlider();
 		slider1A_V1_DegreeOfSim.setBounds(10, 98, 200, 23);
 		slider1A_V1_DegreeOfSim.setMajorTickSpacing(20);
 		slider1A_V1_DegreeOfSim.setMinorTickSpacing(10);
 		slider1A_V1_DegreeOfSim.setPaintTicks(true);
-		slider1A_V1_DegreeOfSim.addChangeListener(this);
+		slider1A_V1_DegreeOfSim.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				JSlider source1 = (JSlider) e.getSource();
+				source1.getValue();
+			}
+		});
 		contentPane.add(slider1A_V1_DegreeOfSim);
 		
 		slider2A_V1_DegreeOfConnectedness = new JSlider();
@@ -127,31 +155,59 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		slider2A_V1_DegreeOfConnectedness.setMajorTickSpacing(20);
 		slider2A_V1_DegreeOfConnectedness.setMinorTickSpacing(10);
 		slider2A_V1_DegreeOfConnectedness.setPaintTicks(true);
-		slider2A_V1_DegreeOfConnectedness.addChangeListener(this);
+		slider2A_V1_DegreeOfConnectedness.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				JSlider source2 = (JSlider) e.getSource();
+				source2.getValue();	
+			}
+		});
 		contentPane.add(slider2A_V1_DegreeOfConnectedness);
 		
-		slider3A_V2_DegreeOfSim = new JSlider();
-		slider3A_V2_DegreeOfSim.setBounds(114, 263, 200, 23);
-		slider3A_V2_DegreeOfSim.setMajorTickSpacing(20);
-		slider3A_V2_DegreeOfSim.setMinorTickSpacing(10);
-		slider3A_V2_DegreeOfSim.setPaintTicks(true);
-		slider3A_V2_DegreeOfSim.addChangeListener(this);
-		contentPane.add(slider3A_V2_DegreeOfSim);
+		slider1B_V2_DegreeOfSim = new JSlider();
+		slider1B_V2_DegreeOfSim.setBounds(220, 98, 200, 23);
+		slider1B_V2_DegreeOfSim.setMajorTickSpacing(20);
+		slider1B_V2_DegreeOfSim.setMinorTickSpacing(10);
+		slider1B_V2_DegreeOfSim.setPaintTicks(true);
+		slider1B_V2_DegreeOfSim.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				JSlider source4 = (JSlider) e.getSource();
+				source4.getValue();
+			}
+		});
+		contentPane.add(slider1B_V2_DegreeOfSim);
 		
-		slider1B_V2_DegreeOfConnectedness = new JSlider();
-		slider1B_V2_DegreeOfConnectedness.setBounds(220, 98, 200, 23);
-		slider1B_V2_DegreeOfConnectedness.setMajorTickSpacing(20);
-		slider1B_V2_DegreeOfConnectedness.setMinorTickSpacing(10);
-		slider1B_V2_DegreeOfConnectedness.setPaintTicks(true);
-		slider1B_V2_DegreeOfConnectedness.addChangeListener(this);
-		contentPane.add(slider1B_V2_DegreeOfConnectedness);
+		slider2B_V2_DegreeOfConnectedness = new JSlider();
+		slider2B_V2_DegreeOfConnectedness.setBounds(220, 173, 200, 23);
+		slider2B_V2_DegreeOfConnectedness.setMajorTickSpacing(20);
+		slider2B_V2_DegreeOfConnectedness.setMinorTickSpacing(10);
+		slider2B_V2_DegreeOfConnectedness.setPaintTicks(true);
+		slider2B_V2_DegreeOfConnectedness.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				JSlider source3 = (JSlider) e.getSource();
+				source3.getValue();
+			}
+		});
+		contentPane.add(slider2B_V2_DegreeOfConnectedness);
 		
 		sliderC_OrderSensitivity = new JSlider();
-		sliderC_OrderSensitivity.setBounds(220, 173, 200, 23);
+		sliderC_OrderSensitivity.setBounds(114, 263, 200, 23);
 		sliderC_OrderSensitivity.setMajorTickSpacing(20);
 		sliderC_OrderSensitivity.setMinorTickSpacing(10);
 		sliderC_OrderSensitivity.setPaintTicks(true);
-		sliderC_OrderSensitivity.addChangeListener(this);
+		sliderC_OrderSensitivity.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				JSlider source5 = (JSlider) e.getSource();
+				source5.getValue();
+			}
+		});
 		contentPane.add(sliderC_OrderSensitivity);
 		
 		btnRun = new JButton("RUN");
@@ -177,6 +233,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 					}
 					pnlContent.removeAll();
 					Word_table = new JTable(Word_data, Word_columnNames);
+					//Word_table.setPreferredSize(new Dimension(500, 500));
 					//Word_table.getModel().addTableModelListener(this);
 					Word_scrollPane = new JScrollPane(Word_table);
 					pnlContent.add(Word_scrollPane);
@@ -184,7 +241,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 					//this.repaint();
 				} 
 				
-				if(btn2_CharBased.isSelected() && slider1A_V1_DegreeOfSim.getValue() == 100){
+				if(btn2_CharBased.isSelected()){
 					try {
 						list_CharSim = db.getQuery2();
 					} catch (SQLException e1) {
@@ -209,17 +266,6 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 					pnlContent.revalidate();
 					//this.repaint();
 				} 
-				
-				if (btn1_WordBased.isSelected() && btn2_CharBased.isSelected()){
-					String error_message1 = "Please select one button at a time.";
-					JOptionPane.showMessageDialog(new JFrame(), error_message1, "Error Message", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				if (!btn1_WordBased.isSelected() && !btn2_CharBased.isSelected()){
-					String error_message2 = "Please select a button.";
-					JOptionPane.showMessageDialog(new JFrame(), error_message2, "Error Message", JOptionPane.ERROR_MESSAGE);
-					
-				}
 			}
 		});
 		btnRun.setBounds(171, 331, 89, 23);
@@ -245,13 +291,13 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		OrderS_Verse1.setBounds(171, 238, 109, 14);
 		contentPane.add(OrderS_Verse1);
 		
-		pnlContent = new JPanel();
-		pnlContent.setBounds(456, 19, 525, 596);
-		Word_table = new JTable(Word_data, Word_columnNames);
-		Word_scrollPane = new JScrollPane(Word_table);
-		pnlContent.add(Word_scrollPane);
-		Word_table.getModel().addTableModelListener(this);
-		contentPane.add(pnlContent);
+//		pnlContent = new JPanel();
+//		pnlContent.setBounds(456, 19, 525, 596);
+//		Word_table = new JTable(Word_data, Word_columnNames);
+//		Word_scrollPane = new JScrollPane(Word_table);
+//		pnlContent.add(Word_scrollPane);
+//		Word_table.getModel().addTableModelListener(this);
+//		contentPane.add(pnlContent);
 	}
 	
 	public static void main(String[] args) {
