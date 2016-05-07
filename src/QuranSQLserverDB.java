@@ -6,6 +6,27 @@ public class QuranSQLserverDB {
 	private static Connection conn;
 	private List<QuranWordSim> list_WordSim;
 	private List<QuranCharSim> list_CharSim;
+	private int V1_Sim_Word_a = 60;
+	private int V2_Sim_Word_b = 70;
+	private int V1_Char_Word_a = 90;
+	private int V2_Char_Word_b = 70;
+	
+	public void setV1_Sim_Word_a(int x1) {
+		this.V1_Sim_Word_a = x1;
+	}
+
+	public void setV2_Sim_Word_b(int y1) {
+		this.V2_Sim_Word_b = y1;
+	}
+	
+	public void setV1_Char_Word_a(int x2) {
+		this.V1_Char_Word_a = x2;
+	}
+
+	public void setV2_Char_Word_b(int y2) {
+		this.V2_Char_Word_b = y2;
+	}
+	
 	
 	public static void createConnection() throws SQLException {
 		String connectionUrl = "jdbc:sqlserver://localhost:1433;" +
@@ -37,8 +58,8 @@ public class QuranSQLserverDB {
 					 + "and sim.AyahSerialNo2 = a2.AyahSerialNo "
 					 + "and a1.SurahSerialNo = s1.SurahSerialNo "
 					 + "and a2.SurahSerialNo = s2.SurahSerialNo "
-					 + "and sim.PercentageOfMatchingWordsInSentence1 > 60 "
-					 + "and sim.PercentageOfMatchingWordsInSentence2 > 70";
+					 + "and sim.PercentageOfMatchingWordsInSentence1 >" + V1_Sim_Word_a 
+					 + "and sim.PercentageOfMatchingWordsInSentence2 >" + V2_Sim_Word_b;
 	
 		list_WordSim = new ArrayList<QuranWordSim>();
 		try {
@@ -53,7 +74,10 @@ public class QuranSQLserverDB {
 				int PercentageOfMatchingWordsInSentence1 = rs.getInt("PercentageOfMatchingWordsInSentence1");
 				int PercentageOfMatchingWordsInSentence2 = rs.getInt("PercentageOfMatchingWordsInSentence2");
 				
-				QuranWordSim x = new QuranWordSim(SurahName1, Ayah1, SurahName2, Ayah2, NoOfMatchingWords, PercentageOfMatchingWordsInSentence1, PercentageOfMatchingWordsInSentence2);
+				QuranWordSim x = new QuranWordSim(SurahName1, Ayah1, SurahName2, Ayah2, 
+												  NoOfMatchingWords, 
+												  PercentageOfMatchingWordsInSentence1, 
+												  PercentageOfMatchingWordsInSentence2);
 				list_WordSim.add(x);
 			}
 		} catch (SQLException e) {
@@ -83,8 +107,8 @@ public class QuranSQLserverDB {
 					  + "and sim.AyahSerialNo2 = a2.AyahSerialNo "
 					  + "and a1.SurahSerialNo = s1.SurahSerialNo "
 					  + "and a2.SurahSerialNo = s2.SurahSerialNo "
-					  + "and sim.PercentageOfMatchingCharsInSentence1 > 90 "
-					  + "and sim.PercentageOfMatchingCharsInSentence2 > 70";
+					  + "and sim.PercentageOfMatchingCharsInSentence1 >" + V1_Char_Word_a
+					  + "and sim.PercentageOfMatchingCharsInSentence2 >" + V2_Char_Word_b;
 		
 		list_CharSim = new ArrayList<QuranCharSim>();
 		try {
@@ -99,7 +123,10 @@ public class QuranSQLserverDB {
 				int PercentageOfMatchingCharsInSentence1 = rs.getInt("PercentageOfMatchingCharsInSentence1");
 				int PercentageOfMatchingCharsInSentence2 = rs.getInt("PercentageOfMatchingCharsInSentence2");
 				
-				QuranCharSim y = new QuranCharSim(SurahName1, Ayah1, SurahName2, Ayah2, NoOfMatchingChars, PercentageOfMatchingCharsInSentence1, PercentageOfMatchingCharsInSentence2);
+				QuranCharSim y = new QuranCharSim(SurahName1, Ayah1, SurahName2, Ayah2, 
+												  NoOfMatchingChars, 
+												  PercentageOfMatchingCharsInSentence1, 
+												  PercentageOfMatchingCharsInSentence2);
 				list_CharSim.add(y);
 			}
 		} catch (SQLException e) {
@@ -145,8 +172,10 @@ public class QuranSQLserverDB {
 	public void update(int row, String columnName, Object data) {
 		QuranWordSim qu = list_WordSim.get(row);
 		//String pName = product.getProductName();
-		int matching = qu.getNoOfMatchingWords();
-		String sql = "update dbo.[N1-Ayahs] a1, dbo.[N1-Ayahs] a2, dbo.[N1-Surahs] s1,  dbo.[N1-Surahs] s2, [dbo].[Similarity_Wordbased_NoOrder_NoRepetetion] sim set " + columnName + " = ?  where matching = ? ";
+		int Word_matching = qu.getNoOfMatchingWords();
+		String sql = "update dbo.[N1-Ayahs] a1, dbo.[N1-Ayahs] a2, "
+				   + "dbo.[N1-Surahs] s1,  dbo.[N1-Surahs] s2, "
+				   + "[dbo].[Similarity_Wordbased_NoOrder_NoRepetetion] sim set " + columnName + " = ?  where Word_matching = ? ";
 		System.out.println(sql);
 		PreparedStatement preparedStatement = null;
 		try {
@@ -155,7 +184,7 @@ public class QuranSQLserverDB {
 				preparedStatement.setString(1, (String) data);
 			else if (data instanceof Integer)
 				preparedStatement.setInt(1, (Integer) data);
-			preparedStatement.setInt(2, matching);
+			preparedStatement.setInt(2, Word_matching);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -167,7 +196,9 @@ public class QuranSQLserverDB {
 		QuranCharSim qui = list_CharSim.get(row_forChar);
 		//String pName = product.getProductName();
 		int Char_matching = qui.getNoOfMatchingChars();
-		String Char_sql = "update dbo.[N1-Ayahs] a1, dbo.[N1-Ayahs] a2, dbo.[N1-Surahs] s1,  dbo.[N1-Surahs] s2, [dbo].[Similarity_Wordbased_NoOrder_NoRepetetion] sim set " + columnName_forChar + " = ?  where Char_matching = ? ";
+		String Char_sql = "update dbo.[N1-Ayahs] a1, dbo.[N1-Ayahs] a2, "
+						+ "dbo.[N1-Surahs] s1,  dbo.[N1-Surahs] s2, "
+						+ "[dbo].[Similarity_Wordbased_NoOrder_NoRepetetion] sim set " + columnName_forChar + " = ?  where Char_matching = ? ";
 		System.out.println(Char_sql);
 		PreparedStatement Char_preparedStatement = null;
 		try {
