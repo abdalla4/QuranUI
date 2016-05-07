@@ -26,26 +26,29 @@ public class QuranSQLserverDB {
 		}
 		
 		Statement stmt = null;
-		String query = "select /*top 1000*/ s1.SurahName, a1.Ayah, s2.SurahName, "
-				+ "a2.Ayah, sim.NoOfMatchingWords, "
-				+ "sim.PercentageOfMatchingWordsInSentence1, sim.PercentageOfMatchingWordsInSentence2 "
-				+ "from dbo.[N1-Ayahs] a1, dbo.[N1-Ayahs] a2, dbo.[N1-Surahs] s1,  dbo.[N1-Surahs] s2, [dbo].[Similarity_Wordbased_NoOrder_NoRepetetion] sim "
-				+ "where sim.AyahSerialNo1 = a1.AyahSerialNo "
-				+ "and sim.AyahSerialNo2 = a2.AyahSerialNo "
-				+ "and a1.SurahSerialNo = s1.SurahSerialNo "
-				+ "and a2.SurahSerialNo = s2.SurahSerialNo "
-				+ "and sim.PercentageOfMatchingWordsInSentence1 > 60 "
-				+ "and sim.PercentageOfMatchingWordsInSentence2 > 70";
-		
+		String query = "select s1.SurahName AS SurahName1, a1.Ayah AS Ayah1, "
+					 + "s2.SurahName AS SurahName2, a2.Ayah AS Ayah2, sim.NoOfMatchingWords, "
+				     + "sim.PercentageOfMatchingWordsInSentence1, "
+				     + "sim.PercentageOfMatchingWordsInSentence2 "
+					 + "from dbo.[N1-Ayahs] a1, dbo.[N1-Ayahs] a2, "
+					 + "dbo.[N1-Surahs] s1,  dbo.[N1-Surahs] s2, "
+					 + "[dbo].[Similarity_Wordbased_NoOrder_NoRepetetion] sim "
+					 + "where sim.AyahSerialNo1 = a1.AyahSerialNo "
+					 + "and sim.AyahSerialNo2 = a2.AyahSerialNo "
+					 + "and a1.SurahSerialNo = s1.SurahSerialNo "
+					 + "and a2.SurahSerialNo = s2.SurahSerialNo "
+					 + "and sim.PercentageOfMatchingWordsInSentence1 > 60 "
+					 + "and sim.PercentageOfMatchingWordsInSentence2 > 70";
+	
 		list_WordSim = new ArrayList<QuranWordSim>();
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				String SurahName1 = rs.getString("SurahName");
-				String Ayah1 = rs.getString("Ayah");
-				String SurahName2 = rs.getString("SurahName");
-				String Ayah2 = rs.getString("Ayah");
+				String SurahName1 = rs.getString("SurahName1");
+				String Ayah1 = rs.getString("Ayah1");
+				String SurahName2 = rs.getString("SurahName2");
+				String Ayah2 = rs.getString("Ayah2");
 				int NoOfMatchingWords = rs.getInt("NoOfMatchingWords");
 				int PercentageOfMatchingWordsInSentence1 = rs.getInt("PercentageOfMatchingWordsInSentence1");
 				int PercentageOfMatchingWordsInSentence2 = rs.getInt("PercentageOfMatchingWordsInSentence2");
@@ -69,26 +72,29 @@ public class QuranSQLserverDB {
 		}
 		
 		Statement stmt2 = null;
-		String query2 = "select /*top 1000*/ s1.SurahName, a1.Ayah, s2.SurahName, "
-				+ "a2.Ayah, sim.NoOfMatchingChars, "
-				+ "sim.PercentageOfMatchingCharsInSentence1, sim.PercentageOfMatchingCharsInSentence2 "
-				+ "from dbo.[N1-Ayahs] a1, dbo.[N1-Ayahs] a2, dbo.[N1-Surahs] s1,  dbo.[N1-Surahs] s2, [dbo].[Similarity_Charbased_NoOrder_NoRepetetion] sim "
-				+ "where sim.AyahSerialNo1 = a1.AyahSerialNo "
-				+ "and sim.AyahSerialNo2 = a2.AyahSerialNo "
-				+ "and a1.SurahSerialNo = s1.SurahSerialNo "
-				+ "and a2.SurahSerialNo = s2.SurahSerialNo "
-				+ "and sim.PercentageOfMatchingCharsInSentence1 > 90 "
-				+ "and sim.PercentageOfMatchingCharsInSentence2 > 70";
+		String query2 = "select s1.SurahName AS SurahName1, a1.Ayah AS Ayah1, "
+					  + "s2.SurahName AS SurahName2, a2.Ayah AS Ayah2, sim.NoOfMatchingChars, "
+					  + "sim.PercentageOfMatchingCharsInSentence1, "
+					  + "sim.PercentageOfMatchingCharsInSentence2 "
+					  + "from dbo.[N1-Ayahs] a1, dbo.[N1-Ayahs] a2, "
+					  + "dbo.[N1-Surahs] s1,  dbo.[N1-Surahs] s2, "
+					  + "[dbo].[Similarity_Charbased_NoOrder_NoRepetetion] sim "
+					  + "where sim.AyahSerialNo1 = a1.AyahSerialNo "
+					  + "and sim.AyahSerialNo2 = a2.AyahSerialNo "
+					  + "and a1.SurahSerialNo = s1.SurahSerialNo "
+					  + "and a2.SurahSerialNo = s2.SurahSerialNo "
+					  + "and sim.PercentageOfMatchingCharsInSentence1 > 90 "
+					  + "and sim.PercentageOfMatchingCharsInSentence2 > 70";
 		
 		list_CharSim = new ArrayList<QuranCharSim>();
 		try {
 			stmt2 = conn.createStatement();
 			ResultSet rs = stmt2.executeQuery(query2);
 			while (rs.next()) {
-				String SurahName1 = rs.getString("SurahName");
-				String Ayah1 = rs.getString("Ayah");
-				String SurahName2 = rs.getString("SurahName");
-				String Ayah2 = rs.getString("Ayah");
+				String SurahName1 = rs.getString("SurahName1");
+				String Ayah1 = rs.getString("Ayah1");
+				String SurahName2 = rs.getString("SurahName2");
+				String Ayah2 = rs.getString("Ayah2");
 				int NoOfMatchingChars = rs.getInt("NoOfMatchingChars");
 				int PercentageOfMatchingCharsInSentence1 = rs.getInt("PercentageOfMatchingCharsInSentence1");
 				int PercentageOfMatchingCharsInSentence2 = rs.getInt("PercentageOfMatchingCharsInSentence2");
