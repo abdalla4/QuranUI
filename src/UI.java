@@ -1,4 +1,6 @@
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -21,6 +23,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 	private JSlider slider2B_V2_DegreeOfConnectedness;
 	private JSlider sliderC_OrderSensitivity;
 	private JButton btnRun;
+	private JButton help_button;
 	private JLabel verse1_DegreeOfSim;
 	private JLabel verse2_DegreeOfSim;
 	private JLabel DOC_Verse1;
@@ -60,7 +63,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 	private JScrollPane Char_scrollPane;
 	
 	public UI() {
-		super("Quran UI V1");
+		super("Quran Interface For Detecting Verse Similarity (V1)");
 		
 		db = new QuranSQLserverDB();
 		
@@ -268,6 +271,17 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		btnRun.setBounds(171, 331, 89, 23);
 		contentPane.add(btnRun);
 		
+		help_button = new JButton("Application Usage Guidlines");
+		help_button.setFont(new Font("Serif", Font.BOLD, 12));
+		help_button.setForeground(Color.BLUE);
+		help_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(null, "HELP");
+			}
+		});
+		help_button.setBounds(120, 420, 200, 23);
+		contentPane.add(help_button);
+		
 		verse1_DegreeOfSim = new JLabel("V1 Degree of Similarity");
 		verse1_DegreeOfSim.setBounds(60, 73, 148, 14);
 		contentPane.add(verse1_DegreeOfSim);
@@ -301,6 +315,8 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		UI GUI = new UI();
 		GUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUI.setMinimumSize(new Dimension(1000, 500));
+		ImageIcon img = new ImageIcon("Quran_Image_Application.png");
+		GUI.setIconImage(img.getImage());
 		GUI.setVisible(true);
 	}
 	
