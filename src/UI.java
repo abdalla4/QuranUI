@@ -44,7 +44,10 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
             "Ayah2",
             "NoOfMatchingWords",
             "PercentageOfMatchingWordsInSentence1",
-            "PercentageOfMatchingWordsInSentence2"};
+            "PercentageOfMatchingWordsInSentence2",
+            "Connectedness1",
+            "Connectedness2",
+            "DegreeOfOrderness"};
 	
 	private Object[][] Word_data;
 	private JTable Word_table;
@@ -78,6 +81,9 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 				Word_data[i][4] = list_WordSim.get(i).getNoOfMatchingWords();
 				Word_data[i][5] = list_WordSim.get(i).getPercentageOfMatchingWordsInSentence1();
 				Word_data[i][6] = list_WordSim.get(i).getPercentageOfMatchingWordsInSentence2();
+				Word_data[i][7] = list_WordSim.get(i).getConnectedness1();
+				Word_data[i][8] = list_WordSim.get(i).getConnectedness2();
+				Word_data[i][9] = list_WordSim.get(i).getDegreeOfOrderness();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -162,7 +168,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				JSlider source2 = (JSlider) e.getSource();
-				source2.getValue();
+				db.setDOC_Sim_Word_a(source2.getValue());
 			}
 		});
 		contentPane.add(slider2A_V1_DegreeOfConnectedness);
@@ -191,7 +197,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				JSlider source4 = (JSlider) e.getSource();
-				source4.getValue();
+				db.setDOC_Sim_Word_b(source4.getValue());
 			}
 		});
 		contentPane.add(slider2B_V2_DegreeOfConnectedness);
@@ -205,7 +211,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				JSlider source5 = (JSlider) e.getSource();
-				source5.getValue();
+				db.setDeg_Of_Orderness_Word(source5.getValue());
 			}
 		});
 		contentPane.add(sliderC_OrderSensitivity);
@@ -230,6 +236,9 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 						Word_data[i][4] = list_WordSim.get(i).getNoOfMatchingWords();
 						Word_data[i][5] = list_WordSim.get(i).getPercentageOfMatchingWordsInSentence1();
 						Word_data[i][6] = list_WordSim.get(i).getPercentageOfMatchingWordsInSentence2();
+						Word_data[i][7] = list_WordSim.get(i).getConnectedness1();
+						Word_data[i][8] = list_WordSim.get(i).getConnectedness2();
+						Word_data[i][9] = list_WordSim.get(i).getDegreeOfOrderness();
 					}
 					pnlContent.removeAll();
 					Word_table = new JTable(Word_data, Word_columnNames);
@@ -265,18 +274,55 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 					pnlContent.add(Char_scrollPane);
 					pnlContent.revalidate();
 					//this.repaint();
-				} 
+				}
+				
+				if(btnRun.isEnabled()){
+					JOptionPane.showMessageDialog(null, "Execution Done");
+				}
 			}
 		});
 		btnRun.setBounds(171, 331, 89, 23);
 		contentPane.add(btnRun);
 		
-		help_button = new JButton("Application Usage Guidlines");
+		help_button = new JButton("User`s Guidlines");
 		help_button.setFont(new Font("Serif", Font.BOLD, 12));
 		help_button.setForeground(Color.BLUE);
 		help_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, "HELP");
+				JOptionPane.showMessageDialog(null, 
+				  "In the name of God, the Most Gracious, the Most Merciful (بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ) \n"
+				+ "This interface was created for the purpose of helping those who memorize \n"
+				+ "the holy Quran realize the similarity between verses.\n"
+				+ "In the Quran, \n"
+				+ "there are words and characters that are repeated more than once \n"
+				+ "depending on the situation being discussed.\n"
+				+ "Allah (SWT) did this to remind us of what we should and should not do.\n"
+				+ "Using this interface will help you study these similarities.\n"
+				+ "Thus for those who memorize the Quran, \n"
+				+ "this application will guide them recognize \n"
+				+ "the reason why Allah (SWT) chose these \n"
+				+ "words or these characters to be indicated in this particular verse as they memorize.\n"
+				+ "As you memorize, \n"
+				+ "this application will help you notice the similarity so that \n"
+				+ "you can avoid mistakes when it is time for reciting.\n"
+				+ "There are five sliders provided on the left side of the interface \n"
+				+ "to help you view certian verses based on similarity conditions.\n"
+				+ "Similarity will be determined through \n"
+				+ "the degree of similarity on each verse, \n"
+				+ "the degree of connectedness on each verse,\n"
+				+ "and the order sensitivity in general.\n"
+				+ "To use this interface, \n"
+				+ "choose between word based similrity and character based similrity \n"
+				+ "using the two radio buttons on the top, \n"
+				+ "then place numbers on the sliders provided on the left side, \n"
+				+ "then click the 'RUN' button to get the results \n"
+				+ "on the table provided on the right side.\n"
+				+ "This table will include similiar verses depending on the numbers you placed on the sliders. \n"
+				+ "This application is camparing each verse of the Quran \n"
+				+ "to every other verse to detect the similrity between \n"
+				+ "that certain verse and the rest of the verses. \n"
+				+ "May Allah (SWT) guide us to memorize and understand the Holy Quran.\n"
+				+ "Peace be upon you (السلام عليكم‎)");
 			}
 		});
 		help_button.setBounds(120, 420, 200, 23);
@@ -315,7 +361,7 @@ public class UI extends JFrame implements ActionListener, TableModelListener, Ch
 		UI GUI = new UI();
 		GUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUI.setMinimumSize(new Dimension(1000, 500));
-		ImageIcon img = new ImageIcon("Quran_Image_Application.png");
+		ImageIcon img = new ImageIcon("QURAN_IMAGE.png");
 		GUI.setIconImage(img.getImage());
 		GUI.setVisible(true);
 	}

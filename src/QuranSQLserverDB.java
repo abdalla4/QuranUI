@@ -6,8 +6,13 @@ public class QuranSQLserverDB {
 	private static Connection conn;
 	private List<QuranWordSim> list_WordSim;
 	private List<QuranCharSim> list_CharSim;
+	
 	private int V1_Sim_Word_a = 60;
 	private int V2_Sim_Word_b = 70;
+	private int DOC_Sim_Word_a = 90;
+	private int DOC_Sim_Word_b = 90;
+	private int Deg_Of_Orderness_Word = 90;
+	
 	private int V1_Char_Word_a = 90;
 	private int V2_Char_Word_b = 70;
 	
@@ -15,22 +20,33 @@ public class QuranSQLserverDB {
 		this.V1_Sim_Word_a = x1;
 	}
 
-	public void setV2_Sim_Word_b(int y1) {
-		this.V2_Sim_Word_b = y1;
+	public void setV2_Sim_Word_b(int x2) {
+		this.V2_Sim_Word_b = x2;
 	}
 	
-	public void setV1_Char_Word_a(int x2) {
-		this.V1_Char_Word_a = x2;
+	public void setDOC_Sim_Word_a(int x3){
+		this.DOC_Sim_Word_a = x3;
+	}
+	
+	public void setDOC_Sim_Word_b(int x4){
+		this.DOC_Sim_Word_b = x4;
+	}
+	
+	public void setDeg_Of_Orderness_Word(int x5){
+		this.Deg_Of_Orderness_Word = x5;
+	}
+	
+	public void setV1_Char_Word_a(int y1) {
+		this.V1_Char_Word_a = y1;
 	}
 
 	public void setV2_Char_Word_b(int y2) {
 		this.V2_Char_Word_b = y2;
 	}
 	
-	
 	public static void createConnection() throws SQLException {
 		String connectionUrl = "jdbc:sqlserver://localhost:1433;" +
-		         "databaseName=QuranV22;user=sa;password=bbb";
+		         "databaseName=QuranV22;user=sa;password=ccc";
 		try {
 			// Establish the connection.
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -50,7 +66,10 @@ public class QuranSQLserverDB {
 		String query = "select s1.SurahName AS SurahName1, a1.Ayah AS Ayah1, "
 					 + "s2.SurahName AS SurahName2, a2.Ayah AS Ayah2, sim.NoOfMatchingWords, "
 				     + "sim.PercentageOfMatchingWordsInSentence1, "
-				     + "sim.PercentageOfMatchingWordsInSentence2 "
+				     + "sim.PercentageOfMatchingWordsInSentence2, "
+				     + "sim.Connectedness1, "
+				     + "sim.Connectedness2, "
+				     + "sim.DegreeOfOrderness "
 					 + "from dbo.[N1-Ayahs] a1, dbo.[N1-Ayahs] a2, "
 					 + "dbo.[N1-Surahs] s1,  dbo.[N1-Surahs] s2, "
 					 + "[dbo].[Similarity_Wordbased_NoOrder_NoRepetetion] sim "
@@ -59,7 +78,10 @@ public class QuranSQLserverDB {
 					 + "and a1.SurahSerialNo = s1.SurahSerialNo "
 					 + "and a2.SurahSerialNo = s2.SurahSerialNo "
 					 + "and sim.PercentageOfMatchingWordsInSentence1 >" + V1_Sim_Word_a 
-					 + "and sim.PercentageOfMatchingWordsInSentence2 >" + V2_Sim_Word_b;
+					 + "and sim.PercentageOfMatchingWordsInSentence2 >" + V2_Sim_Word_b
+					 + "and sim.Connectedness1 >" + DOC_Sim_Word_a
+					 + "and sim.Connectedness2 >" + DOC_Sim_Word_b
+					 + "and sim.DegreeOfOrderness >" + Deg_Of_Orderness_Word;
 	
 		list_WordSim = new ArrayList<QuranWordSim>();
 		try {
@@ -73,11 +95,17 @@ public class QuranSQLserverDB {
 				int NoOfMatchingWords = rs.getInt("NoOfMatchingWords");
 				int PercentageOfMatchingWordsInSentence1 = rs.getInt("PercentageOfMatchingWordsInSentence1");
 				int PercentageOfMatchingWordsInSentence2 = rs.getInt("PercentageOfMatchingWordsInSentence2");
+				int Connectedness1 = rs.getInt("Connectedness1");
+				int Connectedness2 = rs.getInt("Connectedness2");
+				int DegreeOfOrderness = rs.getInt("DegreeOfOrderness");
 				
 				QuranWordSim x = new QuranWordSim(SurahName1, Ayah1, SurahName2, Ayah2, 
 												  NoOfMatchingWords, 
 												  PercentageOfMatchingWordsInSentence1, 
-												  PercentageOfMatchingWordsInSentence2);
+												  PercentageOfMatchingWordsInSentence2,
+												  Connectedness1,
+												  Connectedness2,
+												  DegreeOfOrderness);
 				list_WordSim.add(x);
 			}
 		} catch (SQLException e) {

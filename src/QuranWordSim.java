@@ -6,8 +6,11 @@ public class QuranWordSim {
 	private int NoOfMatchingWords;
 	private int PercentageOfMatchingWordsInSentence1;
 	private int PercentageOfMatchingWordsInSentence2;
+	private int Connectedness1;
+	private int Connectedness2;
+	private int DegreeOfOrderness;
 	
-	public QuranWordSim(String SurahName1, String Ayah1, String SurahName2, String Ayah2, int NoOfMatchingWords, int PercentageOfMatchingWordsInSentence1, int PercentageOfMatchingWordsInSentence2) {
+	public QuranWordSim(String SurahName1, String Ayah1, String SurahName2, String Ayah2, int NoOfMatchingWords, int PercentageOfMatchingWordsInSentence1, int PercentageOfMatchingWordsInSentence2, int Connectedness1, int Connectedness2, int DegreeOfOrderness){
 		setSurahName1(SurahName1);
 		setAyah1(Ayah1);
 		setSurahName2(SurahName2);
@@ -15,6 +18,9 @@ public class QuranWordSim {
 		setNoOfMatchingWords(NoOfMatchingWords);
 		setPercentageOfMatchingWordsInSentence1(PercentageOfMatchingWordsInSentence1);
 		setPercentageOfMatchingWordsInSentence2(PercentageOfMatchingWordsInSentence2);
+		setConnectedness1(Connectedness1);
+		setConnectedness2(Connectedness2);
+		setDegreeOfOrderness(DegreeOfOrderness);
 	}
 	
 	@Override
@@ -87,5 +93,29 @@ public class QuranWordSim {
 	public void setPercentageOfMatchingWordsInSentence2(
 			int percentageOfMatchingWordsInSentence2) {
 		this.PercentageOfMatchingWordsInSentence2 = percentageOfMatchingWordsInSentence2;
+	}
+	
+	public int getConnectedness1(){
+		return Connectedness1;
+	}
+	
+	public void setConnectedness1(int connectedness1){
+		this.Connectedness1 = connectedness1;
+	}
+	
+	public int getConnectedness2(){
+		return Connectedness2;
+	}
+	
+	public void setConnectedness2(int connectedness2){
+		this.Connectedness2 = connectedness2;
+	}
+	
+	public int getDegreeOfOrderness(){
+		return DegreeOfOrderness;
+	}
+	
+	public void setDegreeOfOrderness(int degreeOfOrderness){
+		this.DegreeOfOrderness = degreeOfOrderness;
 	}
 }
